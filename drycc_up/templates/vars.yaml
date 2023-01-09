@@ -1,4 +1,5 @@
 user: root
+port: 22
 key_filename: /Users/duanhongyi/.ssh/id_rsa
 
 prepare:

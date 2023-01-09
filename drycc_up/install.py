@@ -62,6 +62,7 @@ def prepare():
         with Connection(
             host=item["host"],
             user=VARS["user"],
+            port=VARS["port"],
             connect_kwargs={"key_filename": VARS["key_filename"]}
         ) as conn:
             for command in item["commands"]:
@@ -78,6 +79,7 @@ def get_token():
     with Connection(
         host=VARS["master"],
         user=VARS["user"],
+        port=VARS["port"],
         connect_kwargs={"key_filename": VARS["key_filename"]}
     ) as conn:
         result = run_script(conn, "cat /var/lib/rancher/k3s/server/token", warn=True, hide=True)
@@ -88,6 +90,7 @@ def helm_install(name, chart_url, wait=False):
     with Connection(
         host=VARS["master"],
         user=VARS["user"],
+        port=VARS["port"],
         connect_kwargs={"key_filename": VARS["key_filename"]}
     ) as conn:
         values_file = "/tmp/%s.yaml" % name
@@ -117,6 +120,7 @@ def install_master():
     with Connection(
         host=VARS["master"],
         user=VARS["user"],
+        port=VARS["port"],
         connect_kwargs={"key_filename": VARS["key_filename"]}
     ) as conn:
         run_script(
@@ -133,6 +137,7 @@ def install_slaves():
         with Connection(
             host=host,
             user=VARS["user"],
+            port=VARS["port"],
             connect_kwargs={"key_filename": VARS["key_filename"]}
         ) as conn:
             run_script(
@@ -150,6 +155,7 @@ def install_agents():
         with Connection(
             host=host,
             user=VARS["user"],
+            port=VARS["port"],
             connect_kwargs={"key_filename": VARS["key_filename"]}
         ) as conn:
             run_script(
@@ -166,6 +172,7 @@ def label_nodes():
     with Connection(
             host=VARS["master"],
             user=VARS["user"],
+            port=VARS["port"],
             connect_kwargs={"key_filename": VARS["key_filename"]}
         ) as conn:
         for item in VARS["label"]:
@@ -186,6 +193,7 @@ def install_network():
     with Connection(
         host=VARS["master"],
         user=VARS["user"],
+        port=VARS["port"],
         connect_kwargs={"key_filename": VARS["key_filename"]}
     ) as conn:
         run_script(
@@ -201,6 +209,7 @@ def install_metallb():
     with Connection(
         host=VARS["master"],
         user=VARS["user"],
+        port=VARS["port"],
         connect_kwargs={"key_filename": VARS["key_filename"]}
     ) as conn:
         conn.put(os.path.join(INVENTORY, "kubernetes", "metallb.yaml"), "/tmp")
@@ -220,6 +229,7 @@ def install_topolvm():
     with Connection(
         host=VARS["master"],
         user=VARS["user"],
+        port=VARS["port"],
         connect_kwargs={"key_filename": VARS["key_filename"]}
     ) as conn:
         conn.put(os.path.join(INVENTORY, "kubernetes", "topolvm.yaml"), "/tmp")
@@ -259,6 +269,7 @@ def install_components():
     with Connection(
         host=VARS["master"],
         user=VARS["user"],
+        port=VARS["port"],
         connect_kwargs={"key_filename": VARS["key_filename"]}
     ) as conn:
         run_script(
@@ -279,6 +290,7 @@ def install_helmbroker():
     with Connection(
         host=VARS["master"],
         user=VARS["user"],
+        port=VARS["port"],
         connect_kwargs={"key_filename": VARS["key_filename"]}
     ) as conn:
         name = "catalog"
@@ -329,6 +341,7 @@ def clean_all():
         with Connection(
             host=host,
             user=VARS["user"],
+            port=VARS["port"],
             connect_kwargs={"key_filename": VARS["key_filename"]}
         ) as conn:
             run_script(
